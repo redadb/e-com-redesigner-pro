@@ -8,7 +8,11 @@ class AIClientManager {
 
   constructor() {
     const rawKeys = process.env.API_KEY || "";
-    this.keys = rawKeys.split(",").map(k => k.trim()).filter(k => k.length > 0);
+    // Split by comma and strip quotes/whitespace for robustness
+    this.keys = rawKeys
+      .split(",")
+      .map(k => k.trim().replace(/^["']|["']$/g, ""))
+      .filter(k => k.length > 0);
 
     if (this.keys.length === 0) {
       console.warn("No API_KEY found in environment variables.");
